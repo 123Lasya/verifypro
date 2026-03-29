@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Portal - VerifyPro</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Dashboard Specific Styles */
+        .topbar {
+            background-color: var(--background-dark);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            padding: 32px;
+        }
+
+        .stat-card {
+            background-color: var(--background-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stat-content {
+            text-align: right;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1;
+        }
+
+        .main-content {
+            padding: 0 32px 32px;
+        }
+
+        .queue-card {
+            background-color: var(--background-card);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 24px;
+        }
+
+        .queue-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .search-bar {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px 16px;
+            color: white;
+            width: 100%;
+            max-width: 600px;
+            margin-right: 16px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        td {
+            padding: 16px;
+            color: white;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            vertical-align: middle;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid transparent;
+        }
+
+        .status-verified {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+            border-color: rgba(245, 158, 11, 0.2);
+        }
+
+        .status-rejected {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .progress-bar {
+            width: 100px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: white;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            border-radius: 6px;
+        }
+
+        .btn-dark {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-dark:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Topbar -->
+    <header class="topbar">
+        <div class="flex items-center gap-3">
+            <div style="background: var(--primary-color); padding: 8px; border-radius: 8px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="color: white;">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+            </div>
+            <div>
+                <h1 class="font-bold text-white text-lg">HR Portal</h1>
+                <p class="text-muted text-xs">Document Verification Dashboard</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="text-right">
+                <p class="text-xs text-muted">Welcome back,</p>
+                <p class="text-sm font-semibold text-white">HRBKA380</p>
+            </div>
+            <button id="logoutBtn" class="btn btn-outline btn-sm">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="margin-right: 6px;">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">📄</div>
+            <div class="stat-content">
+                <p class="stat-label">Total Documents</p>
+                <p class="stat-value" id="statsTotal">3</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">✅</div>
+            <div class="stat-content">
+                <p class="stat-label">Verified</p>
+                <p class="stat-value" id="statsVerified">1</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">🕒</div>
+            <div class="stat-content">
+                <p class="stat-label">Pending Review</p>
+                <p class="stat-value" id="statsPending">1</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(99, 102, 241, 0.1); color: #6366f1;">✈️</div>
+            <div class="stat-content">
+                <p class="stat-label">Active Requests</p>
+                <p class="stat-value" id="statsActive">1</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="queue-card">
+            <div class="queue-header">
+                <div>
+                    <h2 class="font-bold text-xl text-white">Document Verification Queue</h2>
+                    <p class="text-muted text-sm mt-1">Review and manage candidate document verification requests</p>
+                </div>
+                <!-- <button class="btn btn-primary btn-sm"> + Upload Document </button> -->
+            </div>
+
+            <div class="flex items-center mb-6">
+                <input type="text" class="search-bar" placeholder="Search by Candidate ID, Document ID, or filename...">
+                <select
+                    style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 10px; border-radius: 8px;">
+                    <option>All Status</option>
+                    <option>Verified</option>
+                    <option>Pending</option>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Candidate ID</th>
+                            <th>Document ID</th>
+                            <th>Document Type</th>
+                            <th>Status</th>
+                            <th>Confidence Score</th>
+                            <th>Upload Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="queueTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { MockDB } from '../js/mock-db.js';
+
+        // Check Auth using MockDB
+        const user = MockDB.getCurrentUser();
+        /*
+        if (!user || user.role !== 'hr') {
+            window.location.href = 'login.html';
+        }
+        */
+
+        // Logout
+        document.getElementById('logoutBtn').onclick = () => {
+            MockDB.logout();
+            window.location.href = 'login.html';
+        };
+
+        // Render Queue
+        const candidates = MockDB.getAllCandidates();
+        const tbody = document.getElementById('queueTableBody');
+
+        // Update Stats
+        document.getElementById('statsTotal').textContent = candidates.length;
+        document.getElementById('statsVerified').textContent = candidates.filter(c => c.status === 'verified').length;
+        document.getElementById('statsPending').textContent = candidates.filter(c => c.status === 'pending').length;
+        document.getElementById('statsActive').textContent = candidates.filter(c => c.status === 'pending').length;
+
+        candidates.forEach(c => {
+            const tr = document.createElement('tr');
+
+            // Format Status
+            let statusBadge = '';
+            if (c.status === 'verified') statusBadge = '<span class="status-badge status-verified">✓ Verified</span>';
+            else if (c.status === 'rejected') statusBadge = '<span class="status-badge status-rejected">✕ Rejected</span>';
+            else statusBadge = '<span class="status-badge status-pending">🕒 Pending</span>';
+
+            // Format Risk
+            let riskColor = '#10b981'; // Green
+            if (c.riskScore > 30) riskColor = '#f59e0b'; // Orange
+            if (c.riskScore > 70) riskColor = '#ef4444'; // Red
+
+            tr.innerHTML = `
+                <td>${c.id}</td>
+                <td>RES-${c.id.substr(-4)}</td>
+                <td>📄 Resume</td>
+                <td>${statusBadge}</td>
+                <td>
+                    <div class="progress-bar"><div class="progress-fill" style="width: ${100 - c.riskScore}%; background: ${riskColor}"></div></div>
+                    ${100 - c.riskScore}%
+                </td>
+                <td>${c.uploadDate}</td>
+                <td>
+                    <a href="verification-details.html?id=${c.id}" class="btn btn-dark btn-sm">👁 Review</a>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Search Filter
+        const searchInput = document.querySelector('.search-bar');
+        searchInput.addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            const rows = tbody.querySelectorAll('tr');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(val) ? '' : 'none';
+            });
+        });
+    </script>
+</body>
+
+</html>

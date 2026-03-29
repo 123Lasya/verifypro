@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Documents - VerifyPro</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Specific Dashboard Styles */
+        body {
+            background-color: #0B1120;
+            /* Darker background from image */
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 32px;
+            background-color: transparent;
+        }
+
+        .user-pill {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #111827;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 32px 40px;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card-new {
+            background: #151F32;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        /* Quick Actions */
+        .actions-section {
+            background: #151F32;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .action-buttons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .action-btn-large {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            border-radius: 12px;
+            transition: transform 0.2s;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .action-btn-large:active {
+            transform: scale(0.98);
+        }
+
+        .btn-manual {
+            background: #2563eb;
+            color: white;
+            border: none;
+        }
+
+        .btn-digilocker {
+            background: #0F172A;
+            border: 1px solid #7c3aed;
+            /* Purple tint */
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-digilocker::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #7c3aed;
+        }
+
+        .info-banner {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #d8b4fe;
+            font-size: 0.85rem;
+        }
+
+        /* Main Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 32px;
+        }
+
+        /* Document List */
+        .doc-card {
+            background: #151F32;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .doc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .doc-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(37, 99, 235, 0.1);
+            color: #3b82f6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+        }
+
+        .feedback-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid #3b82f6;
+            padding: 12px;
+            border-radius: 0 4px 4px 0;
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Requests Sidebar */
+        .request-card {
+            background: #1E293B;
+            border: 1px solid #f59e0b;
+            /* Orange border for requests */
+            border-left-width: 4px;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Nav -->
+    <nav class="top-nav">
+        <div class="flex items-center gap-3">
+            <div style="background: var(--primary-color); padding: 8px; border-radius: 8px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="color: white;">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
+            </div>
+            <div>
+                <h1 class="font-bold text-white text-lg">My Documents</h1>
+                <p class="text-muted text-xs">Document Verification Portal</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button class="user-pill">
+                <div class="w-2 h-2 rounded-full bg-success"></div>
+                <div class="text-right">
+                    <p class="text-xs text-muted">Welcome back,</p>
+                    <p class="text-xs font-bold text-white">USR7X9K2M</p>
+                </div>
+            </button>
+            <button id="logoutBtn" class="btn btn-outline btn-sm">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="margin-right: 6px;">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Logout
+            </button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+
+        <!-- Stats Row -->
+        <div class="stats-grid">
+            <div class="stat-card-new">
+                <div class="stat-icon-box" style="background: rgba(37,99,235,0.2); color: #3b82f6;">📄</div>
+                <div class="text-right">
+                    <p class="text-muted text-xs">Total Documents</p>
+                    <p class="text-2xl font-bold text-white" id="statTotal">3</p>
+                </div>
+            </div>
+            <div class="stat-card-new">
+                <div class="stat-icon-box" style="background: rgba(16,185,129,0.2); color: #10b981;">✓</div>
+                <div class="text-right">
+                    <p class="text-muted text-xs">Verified</p>
+                    <p class="text-2xl font-bold text-white" id="statVerified">1</p>
+                </div>
+            </div>
+            <div class="stat-card-new">
+                <div class="stat-icon-box" style="background: rgba(245,158,11,0.2); color: #f59e0b;">🕒</div>
+                <div class="text-right">
+                    <p class="text-muted text-xs">Pending Review</p>
+                    <p class="text-2xl font-bold text-white" id="statPending">1</p>
+                </div>
+            </div>
+            <div class="stat-card-new">
+                <div class="stat-icon-box" style="background: rgba(59,130,246,0.2); color: #60a5fa;">✈️</div>
+                <div class="text-right">
+                    <p class="text-muted text-xs">Active Requests</p>
+                    <p class="text-2xl font-bold text-white">3</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="actions-section">
+            <h2 class="font-bold text-white text-lg">Quick Actions</h2>
+            <p class="text-muted text-sm">Upload documents manually or connect your DigiLocker for instant verification
+            </p>
+
+            <div class="action-buttons-grid">
+                <div class="action-btn-large btn-manual" onclick="document.getElementById('fileInput').click()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        class="mb-2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                    </svg>
+                    <span class="font-bold">Manual Upload</span>
+                    <span class="text-xs opacity-80">Upload documents directly</span>
+                </div>
+                <div class="action-btn-large btn-digilocker" onclick="connectDigiLocker()">
+                    <div class="flex items-center gap-2 mb-1">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                        <span class="font-bold">Connect DigiLocker</span>
+                    </div>
+                    <span class="text-xs text-muted">Instant verification</span>
+                </div>
+            </div>
+
+            <div class="info-banner">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="16" x2="12" y2="12" />
+                    <line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+                <span><strong>Why connect DigiLocker?</strong> Get instant verification for government documents like
+                    Aadhaar, PAN, and educational certificates.</span>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <!-- Left: Documents List -->
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        class="text-white">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                    </svg>
+                    <h2 class="font-bold text-white text-lg">My Documents</h2>
+                    <span class="text-muted text-sm ml-2">All your uploaded documents (<span id="docCount">0</span>
+                        documents)</span>
+                </div>
+
+                <div id="documentsList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Right: Requests -->
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="color: #f59e0b;">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                        <polyline points="10 9 9 9 8 9" />
+                    </svg>
+                    <h2 class="font-bold text-white text-lg">Document Requests</h2>
+                </div>
+                <p class="text-muted text-sm mb-4">HR has requested the following documents</p>
+
+                <div class="request-card">
+                    <div class="request-header">
+                        <div class="flex items-center gap-3">
+                            <div
+                                style="background: rgba(245,158,11,0.1); padding: 8px; border-radius: 6px; color: #f59e0b;">
+                                🎓</div>
+                            <div>
+                                <h3 class="font-bold text-white text-sm">Degree Certificate</h3>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span
+                                        class="text-xs px-2 py-0.5 rounded bg-warning/10 text-warning border border-warning/20">Pending</span>
+                                    <span class="text-xs text-muted">Due: 15 July 2026</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-sm w-full"
+                        onclick="document.getElementById('fileInput').click()">↑ Upload</button>
+                </div>
+
+                <div class="request-card">
+                    <div class="request-header">
+                        <div class="flex items-center gap-3">
+                            <div
+                                style="background: rgba(245,158,11,0.1); padding: 8px; border-radius: 6px; color: #f59e0b;">
+                                💼</div>
+                            <div>
+                                <h3 class="font-bold text-white text-sm">Internship Letter</h3>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span
+                                        class="text-xs px-2 py-0.5 rounded bg-warning/10 text-warning border border-warning/20">Pending</span>
+                                    <span class="text-xs text-muted">Due: 18 July 2026</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-sm w-full"
+                        onclick="document.getElementById('fileInput').click()">↑ Upload</button>
+                </div>
+
+                <div class="request-card">
+                    <div class="request-header">
+                        <div class="flex items-center gap-3">
+                            <div
+                                style="background: rgba(245,158,11,0.1); padding: 8px; border-radius: 6px; color: #f59e0b;">
+                                📝</div>
+                            <div>
+                                <h3 class="font-bold text-white text-sm">10th Marks Memo</h3>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span
+                                        class="text-xs px-2 py-0.5 rounded bg-warning/10 text-warning border border-warning/20">Pending</span>
+                                    <span class="text-xs text-muted">Due: 20 July 2026</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-sm w-full"
+                        onclick="document.getElementById('fileInput').click()">↑ Upload</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Input -->
+    <input type="file" id="fileInput" accept=".pdf,.docx,.jpg,.png">
+
+    <script type="module">
+        import { MockDB } from '../js/mock-db.js';
+
+        // Auth Check
+        const user = MockDB.getCurrentUser();
+        /*
+        if (!user || user.role !== 'candidate') {
+            window.location.href = 'login.html';
+        }
+        */
+
+        // Listener for Upload
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                const file = e.target.files[0];
+
+                // Determine mock type (Resume just for demo)
+                const isResume = file.name.toLowerCase().includes('resume');
+
+                MockDB.createCandidate({
+                    name: user ? 'Current User' : 'Demo User',
+                    email: user ? user.email : 'demo@user.com',
+                    uploadDate: new Date().toISOString().split('T')[0],
+                    documents: {
+                        resume: file.name,
+                        digiLocker: false
+                    },
+                    status: 'pending'
+                });
+
+                // Refresh UI
+                renderDocuments();
+            }
+        });
+
+        window.connectDigiLocker = () => {
+            MockDB.createCandidate({
+                name: 'DigiLocker Linked User',
+                email: user ? user.email : 'demo@user.com',
+                uploadDate: new Date().toISOString().split('T')[0],
+                documents: {
+                    resume: 'Imported from DigiLocker',
+                    digiLocker: true
+                },
+                status: 'pending'
+            });
+            renderDocuments();
+        };
+
+        document.getElementById('logoutBtn').onclick = () => {
+            MockDB.logout();
+            window.location.href = 'login.html';
+        };
+
+        function renderDocuments() {
+            const list = document.getElementById('documentsList');
+            list.innerHTML = '';
+
+            const candidates = MockDB.getAllCandidates(); // In real app, filter by current user
+            // For demo, we show all "my" submissions (assuming single user mock) or filter by email
+            const myDocs = candidates.filter(c => c.email === (user?.email || 'user@email.com'));
+
+            // Update Stats
+            document.getElementById('docCount').textContent = myDocs.length;
+            document.getElementById('statTotal').textContent = myDocs.length;
+            document.getElementById('statVerified').textContent = myDocs.filter(d => d.status === 'verified').length;
+            document.getElementById('statPending').textContent = myDocs.filter(d => d.status === 'pending').length;
+
+            if (myDocs.length === 0) {
+                list.innerHTML = '<div class="text-center text-muted py-8">No documents uploaded yet.</div>';
+                return;
+            }
+
+            myDocs.forEach(doc => {
+                const isVerified = doc.status === 'verified';
+                const isRejected = doc.status === 'rejected';
+
+                let badgeClass = 'status-pending';
+                let badgeText = '🕒 Pending';
+                let iconColor = '#F59E0B'; // Orange
+
+                if (isVerified) {
+                    badgeClass = 'status-verified';
+                    badgeText = '✓ Verified';
+                    iconColor = '#10B981'; // Green
+                } else if (isRejected) {
+                    badgeClass = 'status-rejected';
+                    badgeText = '✕ Rejected';
+                    iconColor = '#EF4444'; // Red
+                }
+
+                // Confidence Bar
+                let confidenceHTML = '';
+                if (isVerified) {
+                    confidenceHTML = `
+                        <div class="mt-4">
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-white font-medium">Confidence Score</span>
+                                <span class="text-white font-bold">94%</span>
+                            </div>
+                            <div class="w-full bg-white/10 rounded-full h-2">
+                                <div class="bg-white h-2 rounded-full" style="width: 94%"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Feedback
+                let feedbackHTML = '';
+                if (isVerified) {
+                    feedbackHTML = `
+                        <div class="feedback-box">
+                            <strong class="text-white block mb-1">HR Feedback:</strong>
+                            Resume verified successfully. All information matches.
+                        </div>
+                    `;
+                } else if (isRejected) {
+                    feedbackHTML = `
+                        <div class="feedback-box" style="border-color: #ef4444;">
+                            <strong class="text-white block mb-1">HR Feedback:</strong>
+                            Document quality insufficient. Please upload a clearer version.
+                        </div>
+                    `;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'doc-card';
+                card.innerHTML = `
+                    <div class="doc-header">
+                        <div class="flex items-center">
+                            <div class="doc-icon">📄</div>
+                            <div>
+                                <h3 class="text-white font-bold">${doc.documents.resume}</h3>
+                                <p class="text-muted text-xs">Resume</p>
+                            </div>
+                        </div>
+                        <span class="status-badge ${badgeClass}" style="padding: 6px 12px;">${badgeText}</span>
+                    </div>
+
+                    ${confidenceHTML}
+
+                    <div class="flex justify-between items-center mt-4 pt-4 border-t border-white/5">
+                        <span class="text-xs text-muted">Uploaded: ${doc.uploadDate}</span>
+                        <span class="text-xs px-2 py-1 rounded bg-white/5 text-white border border-white/10">
+                            ${doc.documents.digiLocker ? 'DigiLocker' : 'Manual'}
+                        </span>
+                    </div>
+
+                    ${feedbackHTML}
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        renderDocuments();
+
+    </script>
+</body>
+
+</html>

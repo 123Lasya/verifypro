@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VerifyPro - AI Document Verification</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Landing Specific Styles */
+        .hero {
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .highlight-blue {
+            color: var(--primary-color);
+            -webkit-text-fill-color: var(--primary-color);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: linear-gradient(145deg, var(--background-card), #162032);
+            padding: 40px 32px;
+            text-align: center;
+            border-radius: 16px;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon-box {
+            width: 56px;
+            height: 56px;
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 24px;
+        }
+
+        .steps-section {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .steps-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 900px;
+            margin: 60px auto 0;
+            position: relative;
+        }
+
+        /* Line connecting steps */
+        .steps-container::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 100px;
+            right: 100px;
+            height: 2px;
+            background-color: var(--background-card);
+            z-index: 0;
+        }
+
+        .step-item {
+            position: relative;
+            z-index: 1;
+            background-color: var(--background-dark);
+            padding: 0 10px;
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--background-card);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 32px;
+            color: var(--primary-color);
+            box-shadow: 0 0 0 8px var(--background-dark);
+            /* Fake spacing for line */
+        }
+
+        .step-badge {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .cta-section {
+            background: linear-gradient(to right, #2563eb, #4f46e5);
+            padding: 80px 0;
+            text-align: center;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav
+        style="position: fixed; top: 0; width: 100%; z-index: 100; backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.05);">
+        <div class="container flex justify-between items-center" style="height: 70px;">
+            <div class="flex items-center gap-2">
+                <div style="background: var(--primary-color); padding: 6px; border-radius: 6px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" style="color: white;">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+                <span class="font-bold text-lg">VerifyPro</span>
+                <span style="font-size: 0.75rem; color: var(--text-muted); align-self: flex-end; margin-bottom: 2px;">AI
+                    Verification Platform</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="pages/login.html" class="text-sm font-medium hover:text-primary">Login</a>
+                <a href="#" class="btn btn-primary text-sm">Request Demo</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero container">
+        <h1>AI-Powered Document <br> <span class="highlight-blue">Verification Platform</span></h1>
+        <p>Streamline your document verification process with intelligent AI technology. Verify credentials instantly
+            and make confident decisions.</p>
+        <a href="pages/login.html" class="btn btn-primary" style="padding: 12px 32px; font-size: 1.1rem;">
+            Start Verifying with AI →
+        </a>
+    </header>
+
+    <!-- Why Choose Us -->
+    <section class="container" style="padding: 60px 16px;">
+        <div class="text-center">
+            <h2 style="font-size: 2rem; margin-bottom: 12px;">Why Choose Us</h2>
+            <p class="text-muted">Built for modern verification needs with cutting-edge technology.</p>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="icon-box"></div>
+                <h3 style="font-size: 1.25rem; margin-bottom: 12px;">AI Verification</h3>
+                <p class="text-muted text-sm">Advanced machine learning algorithms verify documents with high accuracy
+                    in seconds.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-box"></div>
+                <h3 style="font-size: 1.25rem; margin-bottom: 12px;">DigiLocker Integration</h3>
+                <p class="text-muted text-sm">Seamlessly connect with government verified documents through DigiLocker
+                    API.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-box"></div>
+                <h3 style="font-size: 1.25rem; margin-bottom: 12px;">Speed</h3>
+                <p class="text-muted text-sm">Get instant verification results with confidence scores and detailed
+                    analysis.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="steps-section container">
+        <h2 style="font-size: 2rem; margin-bottom: 12px;">How It Works</h2>
+        <p class="text-muted">Simple, fast, and reliable document verification in three easy steps.</p>
+
+        <div class="steps-container">
+            <div class="step-item text-center">
+                <div class="step-icon"></div>
+                <div class="step-badge">STEP 01</div>
+                <h3 class="font-bold">Upload</h3>
+                <p class="text-muted text-sm mt-2">Upload documents or connect DigiLocker</p>
+            </div>
+            <div class="step-item text-center">
+                <div class="step-icon"></div>
+                <div class="step-badge">STEP 02</div>
+                <h3 class="font-bold">AI Check</h3>
+                <p class="text-muted text-sm mt-2">Our AI analyzes and validates information</p>
+            </div>
+            <div class="step-item text-center">
+                <div class="step-icon"></div>
+                <div class="step-badge">STEP 03</div>
+                <h3 class="font-bold">Result</h3>
+                <p class="text-muted text-sm mt-2">Get detailed verification reports instantly</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="container" style="padding: 60px 16px 120px;">
+        <div class="text-center">
+            <h2 style="font-size: 2rem; margin-bottom: 12px;">Key Features</h2>
+            <p class="text-muted">Everything you need for efficient document verification.</p>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card" style="text-align: left;">
+                <div class="icon-box" style="margin: 0 0 20px;">📤</div>
+                <h3 class="font-bold mb-2">Smart Upload</h3>
+                <p class="text-muted text-sm">Drag and drop interface with automatic file type detection.</p>
+            </div>
+            <div class="feature-card" style="text-align: left;">
+                <div class="icon-box" style="margin: 0 0 20px;">🛡️</div>
+                <h3 class="font-bold mb-2">DigiLocker</h3>
+                <p class="text-muted text-sm">Direct integration with government document verification.</p>
+            </div>
+            <div class="feature-card" style="text-align: left;">
+                <div class="icon-box" style="margin: 0 0 20px;">🕒</div>
+                <h3 class="font-bold mb-2">Real-time Tracking</h3>
+                <p class="text-muted text-sm">Live updates on verification progress with detailed status.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 style="font-size: 2.25rem; font-weight: 700; margin-bottom: 16px;">Ready to Get Started?</h2>
+            <p style="opacity: 0.9; margin-bottom: 32px;">Join the future of document verification with our AI-powered
+                platform.</p>
+            <a href="pages/login.html" class="btn" style="background: white; color: var(--primary-color);">Start
+                Verifying Now</a>
+        </div>
+    </section>
+
+</body>
+
+</html>

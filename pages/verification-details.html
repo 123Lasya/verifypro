@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Details - VerifyPro</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .split-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            height: calc(100vh - 80px);
+            /* Minus header */
+            padding: 24px;
+        }
+
+        .panel {
+            background: var(--background-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-body {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .resume-preview {
+            background: #fff;
+            height: 100%;
+            width: 100%;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ccc;
+        }
+
+        .risk-meter {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .risk-fill {
+            height: 100%;
+            transition: width 0.5s;
+        }
+
+        .verification-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid transparent;
+        }
+
+        .status-verified {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+            border-color: rgba(245, 158, 11, 0.2);
+        }
+
+        .status-rejected {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <header
+        style="height: 60px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; padding: 0 24px; background: var(--background-dark);">
+        <a href="hr-dashboard.html" class="flex items-center gap-2 text-muted hover:text-white text-sm">
+            ← Back to Dashboard
+        </a>
+        <div class="ml-4 pl-4 border-l border-white/10">
+            <h1 class="font-semibold text-white" id="candidateName">Loading...</h1>
+        </div>
+        <div class="ml-auto flex gap-3">
+            <button class="btn btn-outline btn-sm text-danger border-danger/30 hover:bg-danger/10"
+                onclick="updateStatus('rejected')">Reject</button>
+            <button class="btn btn-primary btn-sm" onclick="updateStatus('verified')">Approve & Verify</button>
+        </div>
+    </header>
+
+    <div class="split-layout">
+        <!-- Left: Document Preview -->
+        <div class="panel">
+            <div class="panel-header">
+                <h3 class="font-medium text-white">Document Preview</h3>
+                <span class="text-xs text-muted" id="docName">resume.pdf</span>
+            </div>
+            <div class="panel-body bg-slate-900/50">
+                <div class="resume-preview">
+                    <!-- Placeholder UI for PDF -->
+                    <div class="text-center">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1" class="mx-auto mb-4">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                            <line x1="16" y1="13" x2="8" y2="13" />
+                            <line x1="16" y1="17" x2="8" y2="17" />
+                            <polyline points="10 9 9 9 8 9" />
+                        </svg>
+                        <p class="text-slate-500 font-medium">Document Preview Handler</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: AI Analysis -->
+        <div class="panel">
+            <div class="panel-header">
+                <h3 class="font-medium text-white">AI Analysis & Risk Assessment</h3>
+                <div id="statusBadge"></div>
+            </div>
+            <div class="panel-body">
+                <div class="mb-8">
+                    <div class="flex justify-between items-end mb-2">
+                        <span class="text-sm text-muted">Risk Score</span>
+                        <span class="font-bold text-xl" id="riskScoreVal">--/100</span>
+                    </div>
+                    <div class="risk-meter">
+                        <div class="risk-fill" id="riskBar" style="width: 0%; background: var(--success);"></div>
+                    </div>
+                    <p class="text-xs text-muted mt-2" id="riskText">Calculating risk profile based on 14 data points...
+                    </p>
+                </div>
+
+                <h4 class="text-xs font-bold text-muted uppercase mb-4">Verification Checkpoints</h4>
+
+                <div class="verification-item">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-primary">🎓</span>
+                            <span class="font-medium text-white">Education</span>
+                        </div>
+                        <span class="text-xs font-bold text-success" id="eduStatus">MATCH</span>
+                    </div>
+                    <div class="text-sm text-muted">
+                        <div class="flex justify-between py-1 border-b border-white/5">
+                            <span>Resume Claim</span>
+                            <span class="text-white">B.Tech, MIT Manipal</span>
+                        </div>
+                        <div class="flex justify-between py-1">
+                            <span>DigiLocker Record</span>
+                            <span class="text-white">B.Tech, MIT Manipal</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="verification-item">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-primary">💼</span>
+                            <span class="font-medium text-white">Experience</span>
+                        </div>
+                        <span class="text-xs font-bold text-success">VERIFIED</span>
+                    </div>
+                    <p class="text-xs text-muted mt-1">
+                        Employment dates aligned with WorkHistory database records. No gaps detected.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { MockDB, VerificationEngine } from '../js/mock-db.js';
+
+        // Get ID from URL
+        const params = new URLSearchParams(window.location.search);
+        const candidateId = params.get('id');
+        let candidate = null;
+
+        async function init() {
+            if (!candidateId) {
+                alert('No candidate ID specified');
+                window.location.href = 'hr-dashboard.html';
+                return;
+            }
+
+            candidate = MockDB.getCandidateById(candidateId);
+            if (!candidate) return;
+
+            // Render Header
+            document.getElementById('candidateName').textContent = candidate.name;
+            document.getElementById('docName').textContent = candidate.documents?.resume || 'Document';
+
+            // Show current status badge
+            const badgeContainer = document.getElementById('statusBadge');
+            if (candidate.status === 'verified') {
+                badgeContainer.innerHTML = '<span class="status-badge status-verified" style="padding: 6px 12px; font-size: 0.9rem;">✓ Verified</span>';
+            } else if (candidate.status === 'rejected') {
+                badgeContainer.innerHTML = '<span class="status-badge status-rejected" style="padding: 6px 12px; font-size: 0.9rem;">✕ Rejected</span>';
+            } else {
+                badgeContainer.innerHTML = '<span class="status-badge status-pending" style="padding: 6px 12px; font-size: 0.9rem;">🕒 Pending Review</span>';
+            }
+
+            // Run Analysis
+            const analysis = await VerificationEngine.runAnalysis(candidateId);
+
+            // Render Risk based on Deterministic Logic
+            const score = analysis.riskScore;
+            const bar = document.getElementById('riskBar');
+            document.getElementById('riskScoreVal').textContent = `${score}/100`;
+            bar.style.width = `${score}%`;
+
+            if (score > 70) {
+                bar.style.backgroundColor = 'var(--danger)';
+                document.getElementById('riskText').textContent = 'High risk detected. Proceed with caution.';
+            } else if (score > 30) {
+                bar.style.backgroundColor = 'var(--warning)';
+                document.getElementById('riskText').textContent = 'Medium risk. Manual verification recommended.';
+            } else {
+                bar.style.backgroundColor = 'var(--success)';
+                document.getElementById('riskText').textContent = 'Low risk. Profile matches records.';
+            }
+
+            // Mismatch Logic
+            if (analysis.discrepancies.length > 0) {
+                document.getElementById('eduStatus').textContent = 'MISMATCH';
+                document.getElementById('eduStatus').classList.remove('text-success');
+                document.getElementById('eduStatus').classList.add('text-danger');
+            }
+        }
+
+        window.updateStatus = (status) => {
+            if (!candidate) return;
+            MockDB.updateCandidateStatus(candidate.id, status);
+            window.location.href = 'hr-dashboard.html';
+        };
+
+        if (candidateId) init();
+    </script>
+</body>
+
+</html>
