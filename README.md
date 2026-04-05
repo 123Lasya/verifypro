@@ -3,20 +3,7 @@
 <div align="center">
   <p><strong>A comprehensive AI-powered document verification platform that integrates with DigiLocker for seamless certificate validation.</strong></p>
   
-  <p>
-    <a href="https://python.org">
-      <img src="https://shields.io" alt="Python Version">
-    </a>
-    <a href="https://djangoproject.com">
-      <img src="https://shields.io" alt="Django Version">
-    </a>
-    <a href="https://mysql.com">
-      <img src="https://shields.io" alt="MySQL">
-    </a>
-    <a href="https://google.com">
-      <img src="https://shields.io" alt="LangChain">
-    </a>
-  </p>
+
 </div>
 
 ## ✨ Features
